@@ -4,9 +4,9 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 // import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
-import { errorHandler } from './middleware/error.middleware.ts';
-import authRoutes from './modules/auth/auth.routes.ts';
-import taskRoutes from './modules/tasks/task.routes.ts';
+import { errorHandler } from './middleware/error.middleware';
+import authRoutes from './modules/auth/auth.routes';
+import taskRoutes from './modules/tasks/task.routes';
 
 dotenv.config();
 

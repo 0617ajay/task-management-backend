@@ -1,4 +1,4 @@
-import {prisma} from '../../libs/prisma.ts';
+import {prisma} from '../../libs/prisma';
 
 export class TaskService {
   static async createTask(ownerId: string, title: string, description?: string, status?: 'NEW' | 'DONE') {
