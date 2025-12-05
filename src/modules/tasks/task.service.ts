@@ -14,9 +14,18 @@ export class TaskService {
     status?: 'NEW' | 'DONE',
     search?: string
   ) {
-    const where: any = { ownerId };
-    if (status) where.status = status;
-    if (search) where.title = { contains: search, mode: 'insensitive' };
+    const where: any = {ownerId, AND: []};
+
+    if (status) { where.AND.push({ status });}
+
+    if (search) {
+      where.AND.push({
+        OR: [
+          { title: { contains: search, mode: 'insensitive' } },
+          { description: { contains: search, mode: 'insensitive' } },
+        ]
+      });
+    }
 
     const tasks = await prisma.task.findMany({
       where,

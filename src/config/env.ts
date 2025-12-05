@@ -1,10 +1,8 @@
-// src/config/env.ts
 import dotenv from 'dotenv';
 import path from 'path';
 
 dotenv.config({ path: path.resolve(process.cwd(), '.env') });
 
-// Validate required environment variables
 const requiredEnv = [
   'JWT_ACCESS_SECRET',
   'JWT_REFRESH_SECRET',
@@ -28,5 +26,5 @@ export default {
   },
 
   databaseUrl: process.env.DATABASE_URL as string,
-  clientUrl: process.env.CLIENT_URL || 'http://localhost:5173',
+  clientUrl: process.env.CLIENT_URL || 'http://localhost:3000',
 };

@@ -1,4 +1,3 @@
-// src/modules/auth/auth.controller.ts
 import type { Request, Response } from 'express';
 import { AuthService } from './auth.service.ts';
 import { registerSchema, loginSchema } from './auth.validators.ts';
@@ -19,7 +18,6 @@ export class AuthController {
       const body = loginSchema.parse(req.body);
       const { user, accessToken, refreshToken } = await AuthService.login(body.email, body.password);
 
-      // Send refresh token as HTTP-only cookie
       res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
@@ -38,7 +36,6 @@ export class AuthController {
       const token = req.cookies.refreshToken;
       if (!token) throw { status: 401, message: 'No refresh token' };
 
-      // Decode token to get userId
       const decoded: any = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
       const { accessToken, refreshToken } = await AuthService.refresh(decoded.userId, token);
 
@@ -60,7 +57,6 @@ export class AuthController {
       const token = req.cookies.refreshToken;
       if (!token) throw { status: 401, message: 'No refresh token' };
 
-      // Decode token to get userId
       const decoded: any = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
       await AuthService.logout(decoded.userId);
 

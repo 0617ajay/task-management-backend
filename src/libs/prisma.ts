@@ -1,12 +1,3 @@
-// // src/prisma.ts (or wherever you initialize)
-// import { PrismaClient } from '@prisma/client';
-
-// const prisma = new PrismaClient({
-//   // Optional: Log all database queries for debugging
-//   // log: ['query', 'info', 'warn', 'error'],
-// });
-
-// export default prisma;
 
 import "dotenv/config";
 import { PrismaPg } from '@prisma/adapter-pg'
