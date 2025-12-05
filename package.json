@@ -5,10 +5,10 @@
   "type": "module",
   "main": "dist/server.js",
   "scripts": {
+    "prebuild": "npx prisma generate",
     "build": "tsc",
     "start": "node dist/server.js",
-    "dev": "nodemon src/server.ts",
-    "swagger": "tsoa spec-and-routes"
+    "dev": "nodemon src/server.ts"
   },
   "keywords": [
     "node.js",

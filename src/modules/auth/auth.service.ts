@@ -1,8 +1,8 @@
 // src/modules/auth/auth.service.ts
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import env from '../../config/env.ts';
-import { prisma } from '../../libs/prisma.ts';
+import env from '../../config/env';
+import { prisma } from '../../libs/prisma';
 
 const SALT_ROUNDS = 10;
 

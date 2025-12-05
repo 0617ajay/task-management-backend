@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
-import { TaskService } from './task.service.ts';
-import { createTaskSchema, updateTaskSchema, getTasksQuerySchema } from './task.validators.ts';
+import { TaskService } from './task.service';
+import { createTaskSchema, updateTaskSchema, getTasksQuerySchema } from './task.validators';
 
 export class TaskController {
   static async create(req: Request, res: Response) {
