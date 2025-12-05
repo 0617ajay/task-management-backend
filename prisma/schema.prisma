@@ -28,7 +28,7 @@ model Task {
   id          String   @id @default(uuid())
   title       String
   description String?
-  status      TaskStatus @default(TODO)
+  status      TaskStatus @default(NEW)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   ownerId     String
@@ -46,8 +46,6 @@ model RefreshToken {
 }
 
 enum TaskStatus {
-  TODO
-  IN_PROGRESS
+  NEW
   DONE
-  ARCHIVED
 }

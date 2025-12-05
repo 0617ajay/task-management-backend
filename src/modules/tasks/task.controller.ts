@@ -20,7 +20,7 @@ export class TaskController {
         req.user.id,
         Number(page),
         Number(limit),
-        status as 'TODO' | 'IN_PROGRESS' | 'DONE' | 'ARCHIVED' | undefined,
+        status as 'NEW' | 'DONE' | undefined,
         search
       );
       res.json({ success: true, data: tasks });
@@ -59,13 +59,9 @@ export class TaskController {
 
   static async toggle(req: Request, res: Response) {
       try {
-        const { status } = req.body;
-        console.log('Requested status:', status);
-
-        const task = await TaskService.updateTaskStatus(
+        const task = await TaskService.toggleTask(
           req.user.id,
-          req.params.id!,
-          status
+          req.params.id!
         );
 
         res.json({ success: true, data: task });

@@ -1,8 +1,7 @@
-import { log } from 'node:console';
 import {prisma} from '../../libs/prisma.ts';
 
 export class TaskService {
-  static async createTask(ownerId: string, title: string, description?: string, status?: 'TODO' | 'IN_PROGRESS' | 'DONE') {
+  static async createTask(ownerId: string, title: string, description?: string, status?: 'NEW' | 'DONE') {
     return prisma.task.create({
       data: { ownerId, title, description, status },
     });
@@ -12,12 +11,21 @@ export class TaskService {
     ownerId: string,
     page = 1,
     limit = 10,
-    status?: 'TODO' | 'IN_PROGRESS' | 'DONE' | 'ARCHIVED',
+    status?: 'NEW' | 'DONE',
     search?: string
   ) {
-    const where: any = { ownerId };
-    if (status) where.status = status;
-    if (search) where.title = { contains: search, mode: 'insensitive' };
+    const where: any = {ownerId, AND: []};
+
+    if (status) { where.AND.push({ status });}
+
+    if (search) {
+      where.AND.push({
+        OR: [
+          { title: { contains: search, mode: 'insensitive' } },
+          { description: { contains: search, mode: 'insensitive' } },
+        ]
+      });
+    }
 
     const tasks = await prisma.task.findMany({
       where,
@@ -51,32 +59,15 @@ export class TaskService {
   }
 
 
-  static async updateTaskStatus(ownerId: string, taskId: string, newStatus: string) {
+  static async toggleTask(ownerId: string, taskId: string) {
   const task = await this.getTaskById(ownerId, taskId);
 
-  const allowedTransitions: Record<string, string[]> = {
-    TODO: ['IN_PROGRESS', 'ARCHIVED'],
-    IN_PROGRESS: ['DONE', 'ARCHIVED'],
-    DONE: ['ARCHIVED'],
-    ARCHIVED: [] // or allow ['TODO'] if you want to restore
-  };
+  const newStatus = task.status === 'NEW' ? 'DONE' : 'NEW';
 
-  console.log('Current status:', task.status);
-  console.log('New status:', newStatus);
-  log('Allowed transitions:', allowedTransitions[task.status]);
-  log('Is transition allowed?', allowedTransitions[task.status]?.includes(newStatus));
-
-
-  if (!allowedTransitions[task.status]?.includes(newStatus)) {
-    throw {
-      status: 400,
-      message: `Invalid status transition: ${task.status} → ${newStatus}`
-    };
-  }
 
   return prisma.task.update({
     where: { id: taskId },
-    data: { status: newStatus as 'TODO' | 'IN_PROGRESS' | 'DONE' | 'ARCHIVED' },
+    data: { status: newStatus as 'NEW' | 'DONE' },
   });
 }
 
